@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,12 +10,19 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed, jumpForce, moveForce;
     public bool grounded;
     public bool canMoveBack = true;
+    private Transform tr;
+    public bool touchingButton = false;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         moveForce = 10.0f;
+        tr = GetComponent<Transform>();
+        if(SceneManager.GetActiveScene().name == "Level2"){
+            Debug.Log("level2");
+            canMoveBack = false;
+        }
     }
 
     // Update is called once per frame
@@ -22,7 +30,11 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         Jump();
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 5.0f);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 5.0f);     
+        
+        if(Input.GetKeyDown("g") && touchingButton){
+            Debug.Log("button pressed");
+        }
     }
 
     void Move(){
@@ -44,4 +56,24 @@ public class PlayerController : MonoBehaviour
   {
     grounded = _grounded;
   }
+
+  public void OnTriggerEnter(Collider other){
+    if (other.gameObject.tag == "DeathZone"){
+    tr.position = Vector3.zero;
+    }
+
+    if(other.gameObject.tag == "Exit"){
+    SceneManager.LoadScene("Level2");
+    }
+
+    if(other.gameObject.tag == "Button"){
+        touchingButton = true;
+    }
+  }
+
+    public void OnTriggerExit (Collider other){
+        if(other.gameObject.tag == "Button"){
+            touchingButton = false;
+        }
+    }   
 }
