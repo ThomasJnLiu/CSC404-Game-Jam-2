@@ -22,7 +22,7 @@ public class BaseObject : MonoBehaviour
     protected virtual void Update()
     {
         if (isMoveable && wind.isActive) {
-            rb.AddForce(new Vector3(0, 0, wind.force));
+            rb.AddForce(new Vector3(wind.force, 0));
         }
     }
 }

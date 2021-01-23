@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     private Transform tr;
     public bool touchingButton = false;
 
+    protected Wind wind;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +25,8 @@ public class PlayerController : MonoBehaviour
             Debug.Log("level2");
             canMoveBack = false;
         }
+
+        wind = GameObject.Find("Globals/Wind").GetComponent<Wind>();
     }
 
     // Update is called once per frame
@@ -34,6 +38,7 @@ public class PlayerController : MonoBehaviour
         
         if(Input.GetKeyDown("g") && touchingButton){
             Debug.Log("button pressed");
+            wind.setActive(true);
         }
     }
 

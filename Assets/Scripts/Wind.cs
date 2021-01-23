@@ -20,7 +20,7 @@ public class Wind : MonoBehaviour
         
     }
 
-    void setActive(bool isActive)
+    public void setActive(bool isActive)
     {
         this.isActive = isActive;
     }
