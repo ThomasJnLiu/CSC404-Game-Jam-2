@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     }
 
     if(other.gameObject.tag == "Exit"){
-    SceneManager.LoadScene("Level2");
+    SceneManager.LoadScene("playArea");
     }
 
     if(other.gameObject.tag == "Button"){
