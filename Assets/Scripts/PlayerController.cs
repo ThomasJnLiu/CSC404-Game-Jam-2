@@ -48,9 +48,10 @@ public class PlayerController : MonoBehaviour
     }
 
     void Jump(){
-        if(Input.GetKeyDown("t")){
+        if(Input.GetKeyDown("space")){
             if(grounded){
                 Debug.Log("jump");
+                SoundController.PlaySound("jump");
                 rb.AddForce(new Vector3(0, jumpForce, 0));
             }
         }
