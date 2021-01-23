@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDir;
     public float moveSpeed, jumpForce;
     public bool grounded;
+    public bool canMoveBack = true;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,8 @@ public class PlayerController : MonoBehaviour
     void Move(){
         Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         // rb.MovePosition(rb.position + rb.transform.TransformDirection(moveDir)* moveSpeed);
-        rb.velocity = new Vector3(Input.GetAxis("Horizontal")*moveSpeed, rb.velocity.y, Input.GetAxis("Vertical")*moveSpeed);
+        float y = Input.GetAxis("Vertical") < 0 && !canMoveBack? 0 : Input.GetAxis("Vertical");
+        rb.velocity = new Vector3(Input.GetAxis("Horizontal")*moveSpeed, rb.velocity.y, y*moveSpeed);
     }
 
     void Jump(){
