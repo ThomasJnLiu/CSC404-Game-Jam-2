@@ -31,5 +31,13 @@ public class SoundController : MonoBehaviour
                 break;
         }
     }
+
+    public static void StopSound(string clip)
+    {
+        if (audioSrc.isPlaying)
+        {
+            audioSrc.Pause();
+        }
+    }
     
 }

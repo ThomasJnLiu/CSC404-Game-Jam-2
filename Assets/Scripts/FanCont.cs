@@ -6,27 +6,35 @@ public class FanCont : MonoBehaviour
 {
     public static AudioClip fanSound;
     private static AudioSource audioSrc;
+    private Wind wind;
     
     // Start is called before the first frame update
     void Start()
     {
-        fanSound = Resources.Load<AudioClip>("SFX/Large Fan 20 sec loop.wav");
-
+        fanSound = Resources.Load<AudioClip>("SFX/fan");
         audioSrc = GetComponent<AudioSource>();
+        wind = GameObject.Find("Globals/Wind").GetComponent<Wind>();
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (wind.isActive) {
+            Debug.Log("Fan pls");
+            PlayFan();
+        } else {
+            StopFan();
+        }
     }
     
     public static void PlayFan()
     {
-        audioSrc.loop = true;
-        audioSrc.clip = fanSound;
-        audioSrc.Play();
+        if (!audioSrc.isPlaying) {
+            audioSrc.loop = true;
+            audioSrc.clip = fanSound;
+            audioSrc.Play();
+        }
     }
 
     public static void StopFan()
