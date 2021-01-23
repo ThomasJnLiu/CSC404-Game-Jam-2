@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         moveForce = 10.0f;
         tr = GetComponent<Transform>();
-        if(SceneManager.GetActiveScene().name == "Level2"){
-            Debug.Log("level2");
+        if(SceneManager.GetActiveScene().name == "Level2" || SceneManager.GetActiveScene().name == "playArea"){
+            Debug.Log("cant move back DUN NUNUNU");
             canMoveBack = false;
         }
 
