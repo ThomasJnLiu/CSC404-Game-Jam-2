@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void Move(){
-        Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, (Input.GetAxis("Vertical") < 0 && !canMoveBack? 0 : Input.GetAxis("Vertical")));
+        Vector3 moveDir = new Vector3((Input.GetAxis("Horizontal") < 0 && !canMoveBack? 0 : Input.GetAxis("Horizontal")), 0, Input.GetAxis("Vertical"));
         rb.AddForce(moveDir * moveForce);
     }
 
