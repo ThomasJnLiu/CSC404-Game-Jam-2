@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody rb;
     private Vector3 moveDir;
-    public float moveSpeed, jumpForce;
+    public float moveSpeed, jumpForce, moveForce;
     public bool grounded;
     public bool canMoveBack = true;
 
@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        moveForce = 10.0f;
     }
 
     // Update is called once per frame
@@ -21,13 +22,12 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         Jump();
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 5.0f);
     }
 
     void Move(){
-        Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        // rb.MovePosition(rb.position + rb.transform.TransformDirection(moveDir)* moveSpeed);
-        float y = Input.GetAxis("Vertical") < 0 && !canMoveBack? 0 : Input.GetAxis("Vertical");
-        rb.velocity = new Vector3(Input.GetAxis("Horizontal")*moveSpeed, rb.velocity.y, y*moveSpeed);
+        Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, (Input.GetAxis("Vertical") < 0 && !canMoveBack? 0 : Input.GetAxis("Vertical")));
+        rb.AddForce(moveDir * moveForce);
     }
 
     void Jump(){
