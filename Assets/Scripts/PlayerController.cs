@@ -1,19 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     public Rigidbody rb;
     private Vector3 moveDir;
-    public float moveSpeed, jumpForce;
+    public float moveSpeed, jumpForce, moveForce;
     public bool grounded;
     public bool canMoveBack = true;
+    private Transform tr;
+    public bool touchingButton = false;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        moveForce = 10.0f;
+        tr = GetComponent<Transform>();
+        if(SceneManager.GetActiveScene().name == "Level2"){
+            Debug.Log("level2");
+            canMoveBack = false;
+        }
     }
 
     // Update is called once per frame
@@ -21,13 +30,16 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         Jump();
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 5.0f);     
+        
+        if(Input.GetKeyDown("g") && touchingButton){
+            Debug.Log("button pressed");
+        }
     }
 
     void Move(){
-        Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        // rb.MovePosition(rb.position + rb.transform.TransformDirection(moveDir)* moveSpeed);
-        float y = Input.GetAxis("Vertical") < 0 && !canMoveBack? 0 : Input.GetAxis("Vertical");
-        rb.velocity = new Vector3(Input.GetAxis("Horizontal")*moveSpeed, rb.velocity.y, y*moveSpeed);
+        Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, (Input.GetAxis("Vertical") < 0 && !canMoveBack? 0 : Input.GetAxis("Vertical")));
+        rb.AddForce(moveDir * moveForce);
     }
 
     void Jump(){
@@ -44,4 +56,24 @@ public class PlayerController : MonoBehaviour
   {
     grounded = _grounded;
   }
+
+  public void OnTriggerEnter(Collider other){
+    if (other.gameObject.tag == "DeathZone"){
+    tr.position = Vector3.zero;
+    }
+
+    if(other.gameObject.tag == "Exit"){
+    SceneManager.LoadScene("Level2");
+    }
+
+    if(other.gameObject.tag == "Button"){
+        touchingButton = true;
+    }
+  }
+
+    public void OnTriggerExit (Collider other){
+        if(other.gameObject.tag == "Button"){
+            touchingButton = false;
+        }
+    }   
 }
